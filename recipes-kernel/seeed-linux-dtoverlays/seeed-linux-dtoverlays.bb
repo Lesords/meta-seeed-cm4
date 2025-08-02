@@ -2,7 +2,7 @@ SUMMARY = "seeed reterminal device tree overlay"
 DESCRIPTION = "include all the device dtoverlay of reterminal"
 HOMEPAGE = "https://github.com/Seeed-Studio/seeed-linux-dtoverlays"
 
-LICENSE = "GPLv3"
+LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 inherit linux-kernel-base module-base
@@ -20,6 +20,7 @@ DEPENDS += " dtc-native"
 S = "${WORKDIR}/git"
 
 INSANE_SKIP:${PN} = "file-rdeps"
+INSANE_SKIP:${PN} += "buildpaths"
 
 do_compile() {
 	oe_runmake \
@@ -31,13 +32,13 @@ do_compile() {
 }
 
 do_install() {
-	install -d ${D}/lib/modules/${KERNEL_VERSION}/extra/
+	install -d ${D}/usr/lib/modules/${KERNEL_VERSION}/extra/
 	oe_runmake \
 		ARCH=${ARCH} \
 		KBUILD=${STAGING_KERNEL_DIR} \
 		CROSS_COMPILE=${TARGET_PREFIX} \
-		KO_DIR=${D}/lib/modules/${KERNEL_VERSION}/extra/ \
+		KO_DIR=${D}/usr/lib/modules/${KERNEL_VERSION}/extra/ \
 		install_rpi
 }
 
-FILES:${PN} += "/lib/modules/${KERNEL_VERSION}/extra/*"
+FILES:${PN} += "/usr/lib/modules/${KERNEL_VERSION}/extra/*"
