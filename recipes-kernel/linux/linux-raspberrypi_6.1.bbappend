@@ -5,6 +5,9 @@ SRC_URI += " \
     file://enable-audio.cfg \
     "
 
+# KMACHINE:seeed-recomputer-r2x = "raspberrypi5"
+# KBUILD_DEFCONFIG:seeed-recomputer-r2x ?= "bcm2712_defconfig"
+
 do_configure[network] = "1"
 do_configure:append(){
         if [ -d ${WORKDIR}/seeed/ ]; then
