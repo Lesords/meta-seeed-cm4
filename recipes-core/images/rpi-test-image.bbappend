@@ -1,7 +1,3 @@
-INHERIT:append = " \
-	populate_sdk_qt5 \
-	"
-
 SPLASH = "psplash-raspberrypi"
 
 IMAGE_FEATURES:append = " \
@@ -12,23 +8,12 @@ IMAGE_FEATURES:append = " \
 IMAGE_INSTALL:append = " \
 	kernel-modules \
 	seeed-linux-dtoverlays \
-	qtbase \
-	qtbase-plugins \
-	qtbase-tools  \
-	qtquickcontrols-qmlplugins \
-	qtgraphicaleffects-qmlplugins \
-	qtquickcontrols2 \
 	ttf-dejavu-sans ttf-dejavu-sans-mono ttf-dejavu-sans-condensed \
 	ttf-dejavu-serif ttf-dejavu-serif-condensed ttf-dejavu-common \
-	qtcharts \
-	qtquicktimeline \
-	qtquickdesigner-components \
-	python3-pyqt5 \
 	python3-logging \
 	python3-psutil \
 	python3-evdev \
 	evtest \
-	reterminalqt5example \
 	lvgl-demo \
 	iperf3 \
 	i2c-tools \
