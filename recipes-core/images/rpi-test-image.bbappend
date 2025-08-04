@@ -24,5 +24,6 @@ IMAGE_INSTALL:append = " \
 	python3-pip \
 	spidev-test \
 	python3-seeed-python-reterminal \
+    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'r21-board-detect', '', d)} \
 	"
 
