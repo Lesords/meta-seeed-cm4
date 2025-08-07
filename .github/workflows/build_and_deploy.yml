@@ -189,12 +189,11 @@ jobs:
         run: |
             cd ${{ github.workspace }}
             git clone -b scarthgap git://git.yoctoproject.org/poky --depth=10
-            git clone -b main https://github.com/Lesords/meta-seeed-cm4.git meta-seeed-reterminal --depth=10
+            git clone -b scarthgap-action https://github.com/Lesords/meta-seeed-cm4.git meta-seeed-reterminal --depth=10
             cp meta-seeed-reterminal/build-*.sh ./poky
             cd ${{ github.workspace }}/poky
             chmod +x build-*.sh
-            git clone -b scarthgap https://github.com/Lesords/meta-seeed-cm4.git meta-seeed-reterminal --depth=10
-            ./build-basic-pi5-image.sh
+            ./build-recomputer-r2x-image.sh
 
       - name: Build failure diagnosis
         if: steps.build_step.outcome == 'failure'
