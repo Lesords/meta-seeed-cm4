@@ -2,6 +2,8 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 KBUILD_DEFCONFIG:seeed-recomputer-r2x ?= "bcm2712_defconfig"
 
+SRC_URI += "${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'file://disable-hailo.cfg', '', d)}"
+
 do_configure[network] = "1"
 do_configure:append(){
         if [ -d ${WORKDIR}/seeed/ ]; then
