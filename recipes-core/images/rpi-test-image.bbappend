@@ -24,12 +24,5 @@ IMAGE_INSTALL:append = " \
 	python3-pip \
 	spidev-test \
 	python3-seeed-python-reterminal \
-    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'r21-board-detect', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'raspi-utils', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'can-utils', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'watchdog', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'minicom', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'tmux', '', d)} \
-    ${@bb.utils.contains('MACHINE', 'seeed-recomputer-r2x', 'vim', '', d)} \
 	"
 
