@@ -52,6 +52,7 @@ IMAGE_INSTALL:append = " \
     hailo-firmware \
     libhailort-dev \
     hailortcli \
-    hailort-service \
+    protobuf \
+    protobuf-compiler \
 	"
 
