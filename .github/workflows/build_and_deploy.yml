@@ -194,6 +194,12 @@ jobs:
             cd ${{ github.workspace }}/poky
             chmod +x build-*.sh
             source ./build-recomputer-r2x-image.sh
+            pwd
+            ls -al
+            ls -al **
+            cat conf/local.conf
+            echo "------------------------"
+            cat ../meta-raspberrypi/conf/machine/include/rpi-default-versions.inc
             bitbake recomputer-r2x
 
       - name: Build failure diagnosis
