@@ -4,6 +4,11 @@ git clone -b scarthgap https://github.com/Lesords/meta-seeed-cm4.git meta-seeed-
 git clone -b scarthgap https://github.com/agherzan/meta-raspberrypi.git --depth=1
 git clone -b scarthgap https://github.com/openembedded/meta-openembedded.git --depth=1
 
+cd meta-raspberrypi
+git fetch --depth 1 origin 1f2045321afd6ef20b457266ac3e97c8577eb1c4
+git checkout 1f2045321afd6ef20b457266ac3e97c8577eb1c4
+cd ..
+
 source oe-init-build-env # in build dir
 
 bitbake-layers add-layer ../meta-raspberrypi
