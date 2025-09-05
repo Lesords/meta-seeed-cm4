@@ -12,6 +12,9 @@ repos:
   meta-openembedded:
     path: layers/meta-openembedded
     branch: scarthgap
+    layers:
+      meta-oe:
+      meta-python:
   
   meta-mender:
     path: layers/meta-mender
@@ -19,7 +22,7 @@ repos:
   
   meta-raspberrypi:
     path: layers/meta-raspberrypi
-    branch: scarthgap
+    branch: 1f2045321afd6ef20b457266ac3e97c8577eb1c4
   
   meta-lts-mixins:
     path: layers/meta-lts-mixins
@@ -40,6 +43,9 @@ machine: seeed-recomputer-r2x-mender
 local_conf_header:
   mender-full: |
     INHERIT += "mender-full"
+    INIT_MANAGER = "systemd"
+    LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
+    INHERIT:remove = "create-spdx"
   
   raspberrypi: |
     RPI_USE_U_BOOT = "1"
@@ -60,8 +66,8 @@ local_conf_header:
     ENABLE_I2C = "1"
     ENABLE_UART = "1"
     
-    # Install required packages including seeed-linux-dtoverlays and grub-editenv
-    IMAGE_INSTALL:append = " seeed-linux-dtoverlays grub-editenv userlandtools recomputer-r2x-detection"
+    # Install required packages including and grub-editenv
+    IMAGE_INSTALL:append = " grub-editenv userlandtools recomputer-r2x-detection"
     
     # Enable SSH server with openssh
     IMAGE_FEATURES:append = " ssh-server-openssh"
@@ -77,4 +83,4 @@ local_conf_header:
     MENDER_FEATURES_DISABLE:append = " mender-grub mender-image-uefi"
 
 target:
-  - core-image-minimal
+  - recomputer-r2x
