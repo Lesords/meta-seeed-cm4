@@ -636,10 +636,26 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Build failure diagnosis
-        if: steps.build_step.outputs.build-success == 'false'
+        if: steps.build_step.outputs.build-success != 'true'
         run: |
           echo "=== BUILD FAILURE DIAGNOSIS ==="
           echo "Build step failed, collecting diagnostic information..."
+
+          echo "=== u-boot debug ==="
+          # /home/runner/work/meta-seeed-cm4/meta-seeed-cm4/build/tmp/work/seeed_recomputer_r2x_mender-poky-linux/u-boot/2025.04/git
+          # /home/runner/work/meta-seeed-cm4/meta-seeed-cm4/build/tmp/work/seeed_recomputer_r2x_mender-poky-linux/u-boot/2025.04/recipe-sysroot-native/etc/quiltrc
+          # /home/runner/work/meta-seeed-cm4/meta-seeed-cm4/build/tmp/work/seeed_recomputer_r2x_mender-poky-linux/u-boot/2025.04/temp/log.do_patch.1825500
+          # /home/runner/work/meta-seeed-cm4/meta-seeed-cm4/build/../layers/meta-lts-mixins/recipes-bsp/u-boot/u-boot_2025.04.bb
+          echo "======"
+          pwd && ls -al
+          echo ${{ github.workspace }}
+          echo "======"
+          find ${{ github.workspace }}/build/tmp/work -type f -path "*u-boot*/temp/log.do_patch.*" -exec echo "Found u-boot patch log: {}" \; -exec cat {} \; 2>/dev/null || echo "No u-boot patch logs found"
+          find ${{ github.workspace }}/layers/meta-lts-mixins/recipes-bsp/u-boot -type f -name "u-boot_*.bb" -exec echo "Found u-boot recipe: {}" \; -exec cat {} \; 2>/dev/null || echo "No u-boot recipes found"
+          echo "=== find patch ==="
+          find ${{ github.workspace }}/ -name "0001-Adding-boot-delay-2.patch"
+          find ${{ github.workspace }}/ -name "0001-Adding-boot-delay-2.patch" -exec echo "Found u-boot patch: {}" \; -exec head -20 {} \; 2>/dev/null || echo "No u-boot patches found"
+          grep -r "0001-Adding-boot-delay-2.patch" ${{ github.workspace }}/ 2>/dev/null || echo "No references to u-boot patch found in meta-seeed-cm4"
           
           echo "=== Current disk usage ==="
           df -h
