@@ -46,6 +46,8 @@ local_conf_header:
     INIT_MANAGER = "systemd"
     LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
     INHERIT:remove = "create-spdx"
+    BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/u-boot_%.bbappend"
+    BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/"
   
   raspberrypi: |
     RPI_USE_U_BOOT = "1"
@@ -57,6 +59,7 @@ local_conf_header:
   seeed-recomputer-r2x: |
     # Seeed reComputer R2x specific configurations (Raspberry Pi 5 based)
     PREFERRED_VERSION_linux-raspberrypi ?= "6.12%"
+    KBUILD_DEFCONFIG:seeed-recomputer-r2x ?= "bcm2712_defconfig"
     
     # Device tree overlays for reComputer R2x (from kernel source)
     RPI_KERNEL_DEVICETREE_OVERLAYS:append = " overlays/i2c0.dtbo overlays/i2c1.dtbo overlays/i2c3.dtbo overlays/i2c6.dtbo"
