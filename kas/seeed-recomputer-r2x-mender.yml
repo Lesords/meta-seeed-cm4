@@ -1,13 +1,15 @@
 header:
   version: 14
-  includes:
-  - ../meta-mender-community/kas/include/mender-base.yml
 
 repos:
   # Repository paths relative to workspace root
   poky:
     path: layers/poky
     branch: scarthgap
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
   
   meta-openembedded:
     path: layers/meta-openembedded
@@ -16,43 +18,29 @@ repos:
       meta-oe:
       meta-python:
   
-  meta-mender:
-    path: layers/meta-mender
-    branch: scarthgap
-  
   meta-raspberrypi:
     path: layers/meta-raspberrypi
     branch: 1f2045321afd6ef20b457266ac3e97c8577eb1c4
-  
-  meta-lts-mixins:
-    path: layers/meta-lts-mixins
-    commit: a44882db02a0ed0f149371831bfbe067665eb42b
-  
-  meta-mender-community:
-    path: layers/meta-mender-community
-    branch: scarthgap
-    layers:
-      meta-mender-raspberrypi:
   
   meta-seeed-cm4:
     path: layers/meta-seeed-cm4
     branch: main
 
-machine: seeed-recomputer-r2x-mender
+machine: seeed-recomputer-r2x
 
 local_conf_header:
   mender-full: |
-    INHERIT += "mender-full"
+    # INHERIT += "mender-full"
     INIT_MANAGER = "systemd"
     LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
     INHERIT:remove = "create-spdx"
-    BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/u-boot_%.bbappend"
-    BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/"
+    # BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/u-boot_%.bbappend"
+    # BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/"
   
   raspberrypi: |
     RPI_USE_U_BOOT = "1"
     ENABLE_UART = "1"
-    MENDER_BOOT_PART_SIZE_MB = "100"
+    # MENDER_BOOT_PART_SIZE_MB = "100"
     IMAGE_INSTALL:append = " kernel-image kernel-devicetree userlandtools"
     IMAGE_FSTYPES:remove = " rpi-sdimg"
   
@@ -79,11 +67,11 @@ local_conf_header:
     # This ensures the dtbo file is available in the boot partition for bootloader to load
     IMAGE_BOOT_FILES:append = " reComputer-R2x.dtbo;overlays/reComputer-R2x.dtbo reComputer-R21.dtbo;overlays/reComputer-R21.dtbo"
     # Mender specific configurations for reComputer R2x
-    MENDER_ARTIFACT_NAME = "recomputer-r2x-release-1"
-    MENDER_BOOT_PART_SIZE_MB = "100"
-    MENDER_STORAGE_TOTAL_SIZE_MB = "2048"
-    MENDER_FEATURES_ENABLE:append = " mender-uboot mender-image-sd"
-    MENDER_FEATURES_DISABLE:append = " mender-grub mender-image-uefi"
+    # MENDER_ARTIFACT_NAME = "recomputer-r2x-release-1"
+    # MENDER_BOOT_PART_SIZE_MB = "100"
+    # MENDER_STORAGE_TOTAL_SIZE_MB = "2048"
+    # MENDER_FEATURES_ENABLE:append = " mender-uboot mender-image-sd"
+    # MENDER_FEATURES_DISABLE:append = " mender-grub mender-image-uefi"
 
 target:
   - recomputer-r2x
