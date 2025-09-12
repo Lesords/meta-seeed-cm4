@@ -1,0 +1,52 @@
+header:
+  version: 14
+
+repos:
+  # Repository paths relative to workspace root
+  poky:
+    path: layers/poky
+    branch: scarthgap
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+  
+  meta-openembedded:
+    path: layers/meta-openembedded
+    branch: scarthgap
+    layers:
+      meta-oe:
+      meta-python:
+  
+  meta-raspberrypi:
+    path: layers/meta-raspberrypi
+    branch: 1f2045321afd6ef20b457266ac3e97c8577eb1c4
+  
+  meta-seeed-cm4:
+    path: layers/meta-seeed-cm4
+    branch: main
+
+machine: seeed-recomputer-r2x
+
+local_conf_header:
+  mender-full: |
+    INIT_MANAGER = "systemd"
+    LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
+    INHERIT:remove = "create-spdx"
+  
+  seeed-recomputer-r2x: |
+    INHERIT += "extrausers"
+    EXTRA_USERS_PARAMS += "useradd -p '\$5\$pmVNMCh/FWO/AF/B\$jT5iwidXqo07gE4pzXYloi5kxgeO1V2afd66LL8vcd0' recomputer;"
+
+    # Seeed reComputer R2x specific configurations (Raspberry Pi 5 based)
+    PREFERRED_VERSION_linux-raspberrypi ?= "6.12%"
+    
+    # Install required packages including and grub-editenv
+    IMAGE_INSTALL:append = " userlandtools recomputer-r2x-detection"
+    
+    # Enable SSH server with openssh
+    IMAGE_FEATURES:append = " ssh-server-openssh"
+    EXTRA_IMAGE_FEATURES += "debug-tweaks splash"
+
+target:
+  - core-image-base
