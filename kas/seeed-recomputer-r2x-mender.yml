@@ -1,0 +1,77 @@
+header:
+  version: 14
+
+repos:
+  # Repository paths relative to workspace root
+  poky:
+    path: layers/poky
+    branch: scarthgap
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+  
+  meta-openembedded:
+    path: layers/meta-openembedded
+    branch: scarthgap
+    layers:
+      meta-oe:
+      meta-python:
+  
+  meta-raspberrypi:
+    path: layers/meta-raspberrypi
+    branch: 1f2045321afd6ef20b457266ac3e97c8577eb1c4
+  
+  meta-seeed-cm4:
+    path: layers/meta-seeed-cm4
+    branch: main
+
+machine: seeed-recomputer-r2x
+
+local_conf_header:
+  mender-full: |
+    # INHERIT += "mender-full"
+    INIT_MANAGER = "systemd"
+    LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
+    INHERIT:remove = "create-spdx"
+    # BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/u-boot_%.bbappend"
+    # BBMASK += "meta-mender-community/meta-mender-raspberrypi/recipes-bsp/u-boot/"
+  
+  raspberrypi: |
+    RPI_USE_U_BOOT = "1"
+    ENABLE_UART = "1"
+    # MENDER_BOOT_PART_SIZE_MB = "100"
+    IMAGE_INSTALL:append = " kernel-image kernel-devicetree userlandtools"
+    IMAGE_FSTYPES:remove = " rpi-sdimg"
+  
+  seeed-recomputer-r2x: |
+    # Seeed reComputer R2x specific configurations (Raspberry Pi 5 based)
+    PREFERRED_VERSION_linux-raspberrypi ?= "6.12%"
+    KBUILD_DEFCONFIG:seeed-recomputer-r2x ?= "bcm2712_defconfig"
+    
+    # Device tree overlays for reComputer R2x (from kernel source)
+    RPI_KERNEL_DEVICETREE_OVERLAYS:append = " overlays/i2c0.dtbo overlays/i2c1.dtbo overlays/i2c3.dtbo overlays/i2c6.dtbo"
+    
+    # Enable I2C and UART
+    KERNEL_MODULE_AUTOLOAD:rpi += "i2c-dev"
+    ENABLE_I2C = "1"
+    ENABLE_UART = "1"
+    
+    # Install required packages including and grub-editenv
+    IMAGE_INSTALL:append = " grub-editenv userlandtools recomputer-r2x-detection"
+    
+    # Enable SSH server with openssh
+    IMAGE_FEATURES:append = " ssh-server-openssh"
+    
+    # Copy reComputer-R2x.dtbo to boot partition overlays directory
+    # This ensures the dtbo file is available in the boot partition for bootloader to load
+    IMAGE_BOOT_FILES:append = " reComputer-R2x.dtbo;overlays/reComputer-R2x.dtbo reComputer-R21.dtbo;overlays/reComputer-R21.dtbo"
+    # Mender specific configurations for reComputer R2x
+    # MENDER_ARTIFACT_NAME = "recomputer-r2x-release-1"
+    # MENDER_BOOT_PART_SIZE_MB = "100"
+    # MENDER_STORAGE_TOTAL_SIZE_MB = "2048"
+    # MENDER_FEATURES_ENABLE:append = " mender-uboot mender-image-sd"
+    # MENDER_FEATURES_DISABLE:append = " mender-grub mender-image-uefi"
+
+target:
+  - recomputer-r2x
